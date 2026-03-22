@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://cjkba1wlyfh1x"]
+
+[ext_resource type="Script" uid="uid://dlb0k8wujf6f6" path="res://world.gd" id="1_jobqq"]
+[ext_resource type="PackedScene" uid="uid://dcu4bpt8c4dbb" path="res://player.tscn" id="2_fj7yv"]
+[ext_resource type="Script" uid="uid://ch2escudglv1v" path="res://meshing_algorithms/GreedyMeshing.cs" id="4_wse8f"]
+[ext_resource type="Script" uid="uid://dkakg8lbapm1r" path="res://terrain_algorithms/height_map.gd" id="5_wse8f"]
+[ext_resource type="Script" uid="uid://dsfuswj2f72ef" path="res://terrain_algorithms/height_map_terrain.gd" id="6_ic0uy"]
+[ext_resource type="PackedScene" uid="uid://c6ddexm4pbvqm" path="res://terrain.tscn" id="6_wse8f"]
+[ext_resource type="Material" uid="uid://dfimung1t03e8" path="res://add_material.tres" id="7_ioo17"]
+[ext_resource type="Script" uid="uid://dwan4vre81ic0" path="res://selection.gd" id="7_pkg7o"]
+[ext_resource type="Script" uid="uid://bl3g8p0dskq6m" path="res://remove_box.gd" id="8_wse8f"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tlwt5"]
+albedo_color = Color(0.3019608, 0.60784316, 0.9019608, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ioo17"]
+transparency = 1
+albedo_color = Color(0.85490197, 0.28627452, 0.54901963, 0.5176471)
+
+[sub_resource type="Resource" id="Resource_gbfbk"]
+script = ExtResource("4_wse8f")
+metadata/_custom_type_script = "uid://ch2escudglv1v"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ioo17"]
+noise_type = 0
+frequency = 0.003
+
+[sub_resource type="Resource" id="Resource_wse8f"]
+script = ExtResource("5_wse8f")
+noise = SubResource("FastNoiseLite_ioo17")
+
+[sub_resource type="Resource" id="Resource_ioo17"]
+script = ExtResource("6_ic0uy")
+noise = SubResource("Resource_wse8f")
+metadata/_custom_type_script = "uid://dsfuswj2f72ef"
+
+[node name="World" type="Node3D" unique_id=1785106561]
+script = ExtResource("1_jobqq")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2136027655]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 64, 40, 64)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2052238047]
+transform = Transform3D(1, 0, 0, 0, 0.947768, 0.318959, 0, -0.318959, 0.947768, 0, 0, 0)
+
+[node name="Player" parent="." unique_id=739118086 instance=ExtResource("2_fj7yv")]
+transform = Transform3D(-0.99999994, 0, 8.7422755e-08, 0, 0.9999998, 0, -8.742277e-08, 0, -0.99999976, 0, 184, 0)
+speed = 50
+
+[node name="Head" parent="Player" index="2" unique_id=1101930138]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 0.52005583, 0)
+
+[node name="EyeCamera" parent="Player/Head" index="0" unique_id=803095228]
+transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 0, 0)
+
+[node name="SeaLevel" type="CSGBox3D" parent="." unique_id=1117701522]
+transform = Transform3D(1600, 0, 0, 0, 0.01, 0, 0, 0, 1600, 400, 0, 400)
+material = SubResource("StandardMaterial3D_tlwt5")
+
+[node name="RemoveBox" type="CSGBox3D" parent="." unique_id=868296093 node_paths=PackedStringArray("ray")]
+transform = Transform3D(1.002, 0, 0, 0, 1.002, 0, 0, 0, 1.002, 0, 0, 0)
+material = SubResource("StandardMaterial3D_ioo17")
+script = ExtResource("8_wse8f")
+ray = NodePath("../Player/Head/EyeCamera/BlockModification")
+
+[node name="AddBox" type="Node3D" parent="." unique_id=919047719 node_paths=PackedStringArray("ray")]
+script = ExtResource("7_pkg7o")
+ray = NodePath("../Player/Head/EyeCamera/BlockModification")
+
+[node name="Top" type="CSGBox3D" parent="AddBox" unique_id=506145564]
+transform = Transform3D(1.001, 0, 0, 0, 0.001, 0, 0, 0, 1.001, 0, 0.5, 0)
+material = ExtResource("7_ioo17")
+
+[node name="Bottom" type="CSGBox3D" parent="AddBox" unique_id=1003517455]
+transform = Transform3D(1.001, 0, 0, 0, 0.001, 0, 0, 0, 1.001, 0, -0.5, 0)
+material = ExtResource("7_ioo17")
+
+[node name="Left" type="CSGBox3D" parent="AddBox" unique_id=1540490592]
+transform = Transform3D(1.001, 0, 0, 0, -4.371139e-11, -1.001, 0, 0.001, -4.37551e-08, 0, 0, 0.5)
+material = ExtResource("7_ioo17")
+
+[node name="Right" type="CSGBox3D" parent="AddBox" unique_id=818077245]
+transform = Transform3D(1.001, 0, 0, 0, -4.371139e-11, -1.001, 0, 0.001, -4.37551e-08, 0, 0, -0.5)
+material = ExtResource("7_ioo17")
+
+[node name="Front" type="CSGBox3D" parent="AddBox" unique_id=1628919323]
+transform = Transform3D(-4.37551e-08, -0.001, 0, 1.001, -4.371139e-11, 0, 0, 0, 1.001, 0.5, 0, 0)
+material = ExtResource("7_ioo17")
+
+[node name="Back" type="CSGBox3D" parent="AddBox" unique_id=949658033]
+transform = Transform3D(-4.37551e-08, -0.001, 0, 1.001, -4.371139e-11, 0, 0, 0, 1.001, -0.5, 0, 0)
+material = ExtResource("7_ioo17")
+
+[node name="Terrain" parent="." unique_id=275846225 instance=ExtResource("6_wse8f")]
+dimensions = Vector3(512, 128, 512)
+color_array = Dictionary[int, Color]({
+0: Color(0.8085853, 0.60366935, 0.27738, 1),
+1: Color(0.2684504, 0.40791398, 0.1715126, 1),
+2: Color(0.584921, 0.3172878, 0.1978237, 1),
+3: Color(0.84803325, 0.9451254, 0.99703795, 1)
+})
+
+[node name="ChunkManager" parent="Terrain" index="0" unique_id=667974427]
+meshing_algorithm = SubResource("Resource_gbfbk")
+terrain_algorithm = SubResource("Resource_ioo17")
+
+[connection signal="add_voxel" from="Player" to="Terrain/ChunkManager" method="add_voxel"]
+[connection signal="remove_voxel" from="Player" to="Terrain/ChunkManager" method="remove_voxel"]
+
+[editable path="Player"]
+[editable path="Terrain"]

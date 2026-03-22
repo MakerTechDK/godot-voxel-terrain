@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c6ddexm4pbvqm"]
+
+[ext_resource type="Script" uid="uid://8o8c5rwidy6v" path="res://terrain.gd" id="1_0u6kl"]
+[ext_resource type="PackedScene" uid="uid://dsgfskb0ofwe" path="res://chunk_manager.tscn" id="1_46jbc"]
+
+[node name="Terrain" type="Node3D" unique_id=275846225]
+script = ExtResource("1_0u6kl")
+
+[node name="ChunkManager" parent="." unique_id=667974427 instance=ExtResource("1_46jbc")]

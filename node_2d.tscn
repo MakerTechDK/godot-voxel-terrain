@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://4pqund3nukl7"]
+
+[ext_resource type="Script" uid="uid://dwdhrxrf5cbrm" path="res://CR.cs" id="1_wtcfe"]
+
+[node name="Node2D" type="Node2D" unique_id=1886447390]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=24122608]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_wtcfe")

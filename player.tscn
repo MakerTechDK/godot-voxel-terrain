@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dcu4bpt8c4dbb"]
+
+[ext_resource type="Script" uid="uid://dgxqm1mhy52kr" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://b5qemu7prrj4d" path="res://block_modification.gd" id="2_onrkg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4flbx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_onrkg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="CharacterBody3D" unique_id=666385840]
+script = ExtResource("1_4flbx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1618333647]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_4flbx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=473651208]
+mesh = SubResource("CapsuleMesh_onrkg")
+
+[node name="Head" type="Node3D" parent="." unique_id=1101930138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52005583, 0)
+
+[node name="EyeCamera" type="Camera3D" parent="Head" unique_id=803095228]
+current = true
+
+[node name="BlockModification" type="RayCast3D" parent="Head/EyeCamera" unique_id=164890085]
+transform = Transform3D(1.9106854e-16, 4.371139e-08, 0.1, 0.1, -4.371139e-08, 0, 4.371139e-09, 1, -4.371139e-09, 0, 0, -1.5)
+target_position = Vector3(0, -10, 0)
+collision_mask = 2
+script = ExtResource("2_onrkg")
+
+[node name="ViewCenter" type="CSGBox3D" parent="Head/EyeCamera/BlockModification" unique_id=1947269185]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+material = SubResource("StandardMaterial3D_onrkg")
